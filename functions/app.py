@@ -3,15 +3,18 @@ from flask import Flask, jsonify, request
 import serverless_wsgi
 
 app = Flask(__name__)
+# မြန်မာစာ Unicode အမှန်ပေါ်စေရန်
+app.config['JSON_AS_ASCII'] = False
 
 ANSWERS = [
-    {"en": "The signal is clear: YES.", "mm": "အဖြေကတော့ 'ဟုတ်ကဲ့' ပါ။"},
-    {"en": "The signal is blocked. Not now.", "mm": "အခုချိန်မှာ မဖြစ်နိုင်သေးပါဘူး။"},
-    {"en": "The Universe requires action.", "mm": "လက်တွေ့လုပ်ဆောင်ဖို့ လိုအပ်ပါတယ်။"},
-    {"en": "Proceed with caution.", "mm": "သတိထားပြီး လုပ်ဆောင်ပါ။"}
+    {"en": "The signal is clear: YES. Success and positive energy surround your question.", "mm": "အဖြေကတော့ 'ဟုတ်ကဲ့/အောင်မြင်ပါလိမ့်မယ်'။ အဆင်ပြေချောမွေ့မှုတွေ ရရှိလာတော့မှာပါ။"},
+    {"en": "The signal is blocked. Now is not the right time. Re-evaluate your direction.", "mm": "အဖြေကတော့ 'မဖြစ်နိုင်သေးပါ'။ အခုချိန်ဟာ အဆင်သင့်မဖြစ်သေးလို့ ပြန်လည်စဉ်းစားပေးပါ။"},
+    {"en": "The Universe requires action. The answer depends on your next choice.", "mm": "လုပ်ဆောင်ချက်အပေါ်မှာပဲ မူတည်ပါတယ်။ သင့်ရဲ့ ဆုံးဖြတ်ချက်က အဖြေကို ပြောင်းလဲပေးပါလိမ့်မယ်။"},
+    {"en": "Proceed with caution. There are hidden details you haven't seen yet.", "mm": "သတိထားပြီး လုပ်ဆောင်ပါ။ သင်မမြင်ရသေးတဲ့ လျှို့ဝှက်ချက်တွေ ရှိနေနိုင်ပါတယ်။"},
+    {"en": "A flow of energy is coming. Expect a breakthrough in your path soon.", "mm": "တိုးတက်မှုတွေ ရရှိလာတော့မှာပါ။ မကြာခင်မှာ အခွင့်အရေးကောင်းတွေ ရရှိပါလိမ့်မယ်။"}
 ]
 
-@app.route('/.netlify/functions/app/decode', methods=['POST'])
+@app.route('/decode', methods=['POST'])
 def decode():
     result = random.choice(ANSWERS)
     return jsonify(result)
