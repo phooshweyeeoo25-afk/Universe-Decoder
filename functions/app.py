@@ -1,9 +1,8 @@
 import random
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 import serverless_wsgi
 
 app = Flask(__name__)
-# မြန်မာစာ Unicode အမှန်ပေါ်စေရန်
 app.config['JSON_AS_ASCII'] = False
 
 ANSWERS = [
