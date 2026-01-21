@@ -8,46 +8,65 @@
         body { background-color: #050a30; color: #ffffff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; text-align: center; }
         .container { border: 2px solid #D4AF37; padding: 30px; border-radius: 20px; background: rgba(0, 12, 102, 0.4); box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); max-width: 450px; width: 90%; }
         .logo { width: 120px; height: 120px; border-radius: 50%; border: 2px solid #D4AF37; margin-bottom: 15px; object-fit: cover; }
-        h1 { color: #D4AF37; letter-spacing: 2px; font-size: 1.8rem; text-transform: uppercase; }
+        h1 { color: #D4AF37; letter-spacing: 2px; font-size: 1.8rem; text-transform: uppercase; margin: 10px 0; }
         input { width: 85%; padding: 12px; background: transparent; border: 1px solid #D4AF37; color: #D4AF37; border-radius: 5px; margin-bottom: 20px; text-align: center; outline: none; }
         button { background-color: #D4AF37; color: #050a30; padding: 12px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+        button:disabled { background-color: #777; cursor: not-allowed; }
         #resultArea { margin-top: 25px; display: none; border-top: 1px solid rgba(212, 175, 55, 0.3); padding-top: 20px; }
         .en-msg { font-style: italic; color: #D4AF37; margin-bottom: 10px; font-weight: bold; }
+        .mm-msg { font-size: 1.1rem; line-height: 1.6; }
         .booking-link { display: inline-block; margin-top: 25px; color: #D4AF37; text-decoration: none; border: 1px solid #D4AF37; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="logo.jpg" alt="Universe Decoder" class="logo">
+        <img src="logo.jpg" alt="Universe Decoder Logo" class="logo">
         <h1>UNIVERSE DECODER</h1>
+        <p style="color: #ccc; font-size: 0.85rem; margin-bottom: 20px;">Decode your destiny</p>
+        
         <input type="text" id="userQ" placeholder="Write your question here...">
         <button id="decodeBtn" onclick="getDecoding()">DECODE</button>
+        
         <div id="resultArea">
             <div class="en-msg" id="idEn"></div>
-            <div id="idMm"></div>
+            <div class="mm-msg" id="idMm"></div>
             <a href="https://m.me/universedecoder" target="_blank" class="booking-link">MESSAGE ON MESSENGER</a>
         </div>
     </div>
+
     <script>
         async function getDecoding() {
             const q = document.getElementById('userQ').value;
             if(!q) return alert("Please type a question.");
+
             const btn = document.getElementById('decodeBtn');
+            const resultArea = document.getElementById('resultArea');
+            
             btn.innerText = "DECODING...";
             btn.disabled = true;
+
             try {
                 const response = await fetch('/api/decode', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({question: q})
                 });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
                 const data = await response.json();
-                document.getElementById('resultArea').style.display = 'block';
-                // အောက်ပါစာကြောင်း (၂) ကြောင်းတွင် အစက် ( . ) ပါဝင်ရပါမည်
+                
+                resultArea.style.display = 'block';
                 document.getElementById('idEn').innerText = data.en;
                 document.getElementById('idMm').innerText = data.mm;
-            } catch (err) { alert("The Universe is busy. Try again."); }
-            finally { btn.innerText = "DECODE"; btn.disabled = false; }
+                
+            } catch (err) {
+                console.error(err);
+                alert("The Universe is busy. Please try again in a moment.");
+            } finally {
+                btn.innerText = "DECODE";
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
