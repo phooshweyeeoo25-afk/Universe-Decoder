@@ -52,17 +52,18 @@
                     body: JSON.stringify({question: q})
                 });
                 
-                if (!response.ok) throw new Error('Network response was not ok');
+                if (!response.ok) throw new Error('API Error');
                 
                 const data = await response.json();
                 
                 resultArea.style.display = 'block';
+                // ဤစာကြောင်း (၂) ကြောင်းသည် အစက် ( . ) နှင့် format တိကျရန် အရေးကြီးသည်
                 document.getElementById('idEn').innerText = data.en;
                 document.getElementById('idMm').innerText = data.mm;
                 
             } catch (err) {
                 console.error(err);
-                alert("The Universe is busy. Please try again in a moment.");
+                alert("The Universe is busy. Please try again.");
             } finally {
                 btn.innerText = "DECODE";
                 btn.disabled = false;
